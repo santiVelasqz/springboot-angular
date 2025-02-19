@@ -40,16 +40,9 @@ public class ClienteRestController {
 	public List<Cliente> index(){
 		return clienteService.findAll();
 	}
-	
-//	@GetMapping("/clientes/{id}")
-//	public Cliente show(@PathVariable Long id) {
-//		return clienteService.findById(id);
-//		
-//	}
-	
-	//controlando errores
+
 	@GetMapping("/clientes/{id}")
-	public ResponseEntity<?> show(@PathVariable Long id) { //el signo ? es que puede ser de cualquier tipo (string, cliente, etc)
+	public ResponseEntity<?> show(@PathVariable Long id) { 
 		
 		Cliente cliente = null;
 		Map<String, Object> response = new HashMap<>();
@@ -69,31 +62,13 @@ public class ClienteRestController {
 		
 	}
 	
-//	@PostMapping("/clientes")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Cliente create(@RequestBody Cliente cliente) {
-//		
-//		return clienteService.save(cliente);
-//	}
-	
 	@PostMapping("/clientes")
 	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult result) {
 		
 		Cliente clienteNew = null;
 		Map<String, Object> response = new HashMap<>();
 		
-		if(result.hasErrors()) {
-			
-			//Forma antigua (previo a Java 8)
-			
-//			List<String> errors = new ArrayList<>();
-//			
-//			for(FieldError err: result.getFieldErrors()) {
-//				errors.add("El campo '" + err.getField() +"' " + err.getDefaultMessage());
-//			}
-			
-			//Forma posterior
-			
+		if(result.hasErrors()) {		
 			List<String> errors = result.getFieldErrors()
 					.stream()
 					.map(err -> "El campo '" + err.getField() +"' " + err.getDefaultMessage())
@@ -117,18 +92,6 @@ public class ClienteRestController {
 		response.put("cliente", clienteNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
-	
-//	@PutMapping("/clientes/{id}")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
-//		Cliente clienteActual = clienteService.findById(id);
-//		
-//		clienteActual.setApellido(cliente.getApellido());
-//		clienteActual.setNombre(cliente.getNombre());
-//		clienteActual.setEmail(cliente.getEmail());
-//		
-//		return clienteService.save(clienteActual);
-//	}
 	
 	@PutMapping("/clientes/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult result, @PathVariable Long id) {
@@ -176,13 +139,6 @@ public class ClienteRestController {
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
-	
-//	@DeleteMapping("/clientes/{id}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void delete(@PathVariable Long id) {
-//	
-//		clienteService.delete(id);
-//	}
 	
 	@DeleteMapping("/clientes/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
