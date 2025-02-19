@@ -1,0 +1,65 @@
+@if (errores && errores.length > 0) {
+    <ul class="alert alert-danger">
+      @for (err of errores; track err) {
+        <li>{{err}}</li>
+      }
+    </ul>
+  }
+
+
+
+<div class="card bg-dark text-white">
+    <div class="card-header">{{titulo}}</div>
+    <div class="card-body"></div>
+    <form #clienteForm="ngForm">
+        <div class="form-group row">
+            <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"  #nombre="ngModel" > <!-- required  minlength="4"     -->
+                @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
+                    @if(nombre.errors!['required']){
+                    <div class="text-danger">El nombre es requerido</div>
+                    }
+                    @if(nombre.errors!['minlength']){
+                        <div class="text-danger">El nombre debe de tener minimo 4 caracteres</div>
+                        }
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="apellido" class="col-form-label col-sm-2">Apellidos</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido"  #apellido="ngModel"> <!-- required     -->
+                @if (apellido.invalid && (apellido.dirty || apellido.touched)) {
+                    @if(apellido.errors!['required']){
+                    <div class="text-danger">El apellido es requerido</div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-form-label col-sm-2">Email</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" #email="ngModel"> <!-- required  email   -->
+                @if (email.invalid && (email.dirty || email.touched)) {
+                    @if(email.errors!['required']){
+                    <div class="text-danger">El email es requerido</div>
+                    }
+                    @if(email.errors!['email']){
+                        <div class="text-danger">El email no tiene formato correcto</div>
+                        }
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @if (!cliente.id) {
+                    <button class="btn btn-primary" role="button" (click)="create()" [disabled]="!clienteForm.form.valid">Crear</button>
+                  } @else {
+                    <button class="btn btn-primary" role="button" (click)="update()" [disabled]="!clienteForm.form.valid">Editar</button>
+                  }
+            </div>
+        </div>
+    
+    </form>
+</div>
